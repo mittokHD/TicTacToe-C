@@ -1,37 +1,55 @@
 #include <iostream>
-#include <string>
-#include "Functions.h"
+#include "Map.h"
+#include "windows.h"
 using std::cout;
 using std::cin;
 using std::endl;
 using std::vector;
 
-
 int main() {
-    Functions Map;
-    bool test = true;
-    bool test1 = true;
+    //WhileTrue Arguments
+    bool player = true;
+    bool computer = true;
+    //pos muss deklariert sein
     int pos = 0;
-    Map.toString();
+    //Map wird erstellt
+    Map Map;
+    Map.print();
 
-    while(test && test1){
+    //Gameloop
+    while (player && computer) {
+        //Player spielt loop
         cout << "----------------" << endl
-        << "Gib ein Feld ein"<< endl
-        << "----------------" << endl;
+             << "Gib eine Zahl ein" << endl
+             << "----------------" << endl;
         cin >> pos;
         Map.setSymbol(pos);
-        test1 = Map.checker("X");
+        player = Map.checker(Structures::PLAYER);
+        if (!player) {
+            Map.print();
+            Map.checkWhoWon(player,computer);
+            return 0;
+        }
+        Map.print();
 
-        Map.toString();
+        Sleep(1500);
+
+        //Computer spielt loop
+        cout << "----------------" << endl
+            << "Der Computer war" << endl
+            << "----------------" << endl;
         Map.setSymbol();
-        Map.toString();
-        test = Map.checker("O");
+        Map.print();
+        computer = Map.checker(Structures::COMP);
+        if (!computer) {
+            Map.print();
+            Map.checkWhoWon(player,computer);
+            return 0;
+        }
     }
-    if (!test){
-        cout << "Der Computer hat gewonnen";
-    }
-    else{
-        cout << "Du hast gewonnen";
-    }
-    return 0;
 }
+
+
+
+
+

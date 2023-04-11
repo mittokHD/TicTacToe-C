@@ -3,4 +3,4 @@ project(untitled)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(untitled main.cpp Functions.h Functions.cpp)
+add_executable(untitled main.cpp Map.h Map.cpp Structures.cpp Structures.h)

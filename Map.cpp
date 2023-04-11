@@ -1,28 +1,43 @@
-#include "Functions.h"
-#include "Structures.h"
-using std::string;
+#include "Map.h"
 using std::cout;
 using std::endl;
 
-Functions::Functions() {
+Map::Map() {
+    map.resize(3);
     for(int x=0; x<3; x++){
+        map.at(x).resize(3);
         for(int y=0; y<3; y++){
-            map[x][y] = Structures::CLEAR;
+            map.at(x).at(y) = Structures::CLEAR;
         }
     }
 }
 
-void Functions::print() {
+void Map::print() {
+    int counter = 1;
     for(int x = 0; x<map.size(); x++){
         for(int y = 0; y<map.size(); y++){
-            cout << map[x][y];
+            if(map.at(x).at(y) == Structures::CLEAR){
+                cout << counter;
+                counter++;
+                continue;
+            }
+            if(map.at(x).at(y) == Structures::PLAYER){
+                counter++;
+                cout << "";
+            }
+            if(map.at(x).at(y) == Structures::COMP){
+                cout << "";
+                counter++;
+            }
+
+            cout << map.at(x).at(y);
         }
         cout << endl;
     }
     cout << endl;
 }
 
-std::string Functions::decoder(int pos){
+Structures Map::decoder(int pos){
     switch (pos) {
         case 1:
             return map.at(0).at(0);
@@ -43,11 +58,12 @@ std::string Functions::decoder(int pos){
         case 9:
             return map.at(2).at(2);
         default:
-            return "ERROR. Number out of bounce.";
+            cout << "ERROR. Number out of bounce.";
+            return Structures::CLEAR;
     }
 }
 
-std::vector<int> Functions::encoder(int pos){
+std::vector<int> Map::encoder(int pos){
     switch (pos) {
         case 1:
             return {0,0};
@@ -72,32 +88,30 @@ std::vector<int> Functions::encoder(int pos){
     }
 }
 
-datatype Functions::setSymbol() {
+void Map::setSymbol() {
     std::random_device rd;
     std::uniform_int_distribution<int> dist(1,9);
     int pos = dist(rd);
-    while (decoder(pos) == "X" || decoder(pos) == "O"){
+    while (decoder(pos) != Structures::CLEAR){
          pos = dist(rd);
     }
     std::vector encoded = encoder(pos);
-    map[encoded[0]][encoded[1]] = "O";
-    return map;
+    map.at(encoded[0]).at(encoded[1]) = Structures::COMP;
 }
 
-datatype Functions::setSymbol(int pos) {
-    while (decoder(pos) == "X" || decoder(pos) == "O"){
+void Map::setSymbol(int pos) {
+    while (decoder(pos) != Structures::CLEAR){
         cout << "Error. Bereits belegt. Gib ein neues Feld ein";
         std::cin >> pos;
     }
     std::vector encoded = encoder(pos);
-    map[encoded[0]][encoded[1]] = "X";
-    return map;
+    map.at(encoded[0]).at(encoded[1]) = Structures::PLAYER;
 }
 
-bool Functions::checker(string symbol) {
+bool Map::checker(Structures symbol) {
     int counter = 0;
     for (int i = 0; i < 3; i++){
-        if (map[i][i] == symbol){
+        if (map.at(i).at(i) == symbol){
             counter = counter + 1;
         }
         if (counter == 3){
@@ -107,7 +121,7 @@ bool Functions::checker(string symbol) {
     counter = 0;
     for(int x = 0; x<3; x++){
         for(int y = 0; y<3; y++){
-            if (map[x][y] == symbol){
+            if (map.at(x).at(y) == symbol){
                 counter = counter + 1;
             }
             if (counter == 3){
@@ -118,7 +132,7 @@ bool Functions::checker(string symbol) {
     }
     for(int y = 0; y<3; y++){
         for(int x = 0; x<3; x++){
-            if (map[x][y] == symbol){
+            if (map.at(x).at(y) == symbol){
                 counter = counter + 1;
             }
             if (counter == 3){
@@ -128,6 +142,17 @@ bool Functions::checker(string symbol) {
         counter = 0;
     }
     return true;
+}
+
+void Map::checkWhoWon(bool test, bool test1){
+    if (!test) {
+        cout << "Du hast gewonnen" << endl;
+        return;
+    }
+    if (!test1) {
+        cout << "Der Computer hat gewonnen" << endl;
+        return;
+    }
 }
 
 

@@ -2,41 +2,38 @@
 // Created by marvi on 22.03.2023.
 //
 
-#ifndef UNTITLED_FUNCTIONS_H
-#define UNTITLED_FUNCTIONS_H
+#ifndef UNTITLED_MAP_H
+#define UNTITLED_MAP_H
 
 #include <string>
 #include <vector>
 #include <iostream>
 #include <random>
-#include "Functions.h"
 #include "Structures.h"
 
-typedef std::vector<std::vector<std::string>> datatype;
+typedef std::vector<std::vector<Structures>> datatype;
 
 
 
-class Functions {
+class Map {
 private:
-    datatype map = {{"1","2","3"},{"4","5","6"},{"7","8","9"}};;
+    datatype map;
 
 public:
-    Functions();
+    Map();
     void print();
 
 
-    std::string decoder (int pos);
+    Structures decoder (int pos);
     std::vector<int> encoder(int pos);
 
-    datatype setSymbol();
-    datatype setSymbol(int pos);
+    void setSymbol();
+    void setSymbol(int pos);
 
-    bool checker(std::string symbol);
-
-
-
+    bool checker(Structures symbol);
+    void checkWhoWon(bool test, bool test1);
 };
 
 
 
-#endif //UNTITLED_FUNCTIONS_H
+#endif //UNTITLED_MAP_H
