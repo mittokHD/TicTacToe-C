@@ -1,21 +1,18 @@
 #include "Functions.h"
-
+#include "Structures.h"
 using std::string;
 using std::cout;
 using std::endl;
 
-Functions::Functions()
-{
-   map = createMap();
+Functions::Functions() {
+    for(int x=0; x<3; x++){
+        for(int y=0; y<3; y++){
+            map[x][y] = Structures::CLEAR;
+        }
+    }
 }
 
-datatype Functions::createMap(){
-    datatype x = {{"1","2","3"},{"4","5","6"},{"7","8","9"}};
-    return x;
-}
-
-
-void Functions::toString() {
+void Functions::print() {
     for(int x = 0; x<map.size(); x++){
         for(int y = 0; y<map.size(); y++){
             cout << map[x][y];
@@ -77,7 +74,7 @@ std::vector<int> Functions::encoder(int pos){
 
 datatype Functions::setSymbol() {
     std::random_device rd;
-    std:: uniform_int_distribution<int> dist(1,9);
+    std::uniform_int_distribution<int> dist(1,9);
     int pos = dist(rd);
     while (decoder(pos) == "X" || decoder(pos) == "O"){
          pos = dist(rd);
@@ -132,6 +129,8 @@ bool Functions::checker(string symbol) {
     }
     return true;
 }
+
+
 
 
 
